@@ -1,0 +1,125 @@
+.Navbar{
+    width: 1263px; 
+    height: 78px; 
+    left: 89px; 
+    top: 34px; 
+    position: absolute; 
+    background: #F7E6C4; 
+    border-radius: 25px;
+}
+
+.Explore{
+    padding-top: 1.5%;
+    margin-left: 2%;
+}
+
+.Santaplokal{
+    left: 570px; 
+    top: 20px; 
+    position: absolute; 
+    color: black; 
+    font-size: 32px; 
+    font-family: Inte; 
+    font-weight: 800; 
+    word-wrap: break-word;
+}
+
+.Logo{
+    width: 90px; 
+    height: 92px; 
+    right: 20px; 
+    top: 0px; 
+    position: absolute; 
+}
+
+.Tagline {
+    width: 475px; 
+    height: 202px; 
+    left: 145px; 
+    top: 300px; 
+    position: absolute; 
+    color: black; 
+    font-size: 40px; 
+    font-family: Verdana; 
+    font-weight: 400; 
+    word-wrap: break-word;
+}
+
+.Food{
+    width: 584px; 
+    height: 333.48px; 
+    left: 767px; 
+    top: 188px; 
+    position: absolute; 
+    img{
+        border-radius: 20px;
+    }
+}
+
+.Kotak{
+    width: 50%; 
+    height: 19%; 
+    margin-left: 20%;
+    padding-left: 10%;
+    background: black; 
+    border-radius: 25px; 
+    border: 1px #f9ad4aaf solid;
+    margin-top: 20px;
+}
+
+.Jelajahi{
+    width: 100%; 
+    height: 100%; 
+    color: white; 
+    font-size: 16px; 
+    font-family: Inria Serif; 
+    font-weight: 700; 
+    word-wrap: break-word;
+}
+
+.Batas{
+    width: 1535px; 
+    height: 48px; 
+    left: 0px; 
+    top: 603px; 
+    position: absolute; 
+    background: rgba(255, 255, 255, 0.89);
+}
+
+.Frame1{
+    width: 1189px; 
+    height: 397px; 
+    left: 51px; 
+    top: 701px; 
+    position: absolute;
+}
+
+.Bulat1{
+    width: 179px; 
+    height: 174px; 
+    left: 69px; 
+    top: 0px; 
+    position: absolute; 
+    box-shadow: 4px 4px 4px; 
+    border-radius: 9999px; 
+    filter: blur(2px);
+}
+
+.Gambar1{
+    width: 153px; 
+    height: 154px; 
+    left: 82px; 
+    top: 10px; 
+    position: absolute; 
+    border-radius: 9999px;
+}
+
+.Text{
+    left: 131px; top: 733px; 
+    position: absolute; 
+    color: black; 
+    font-size: 24px; 
+    font-family: Goldman; 
+    font-weight: 700; 
+    word-wrap: break-word;
+}
