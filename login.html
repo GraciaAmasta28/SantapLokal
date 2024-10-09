@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santap Lokal Login</title>
+</head>
+<body>
+    <div class="wrapper">
+        <img src="logo.png" alt="logo">
+        <form action="GET">
+            <label for="">LOGIN</label>
+            <input type="text">
+        </form>
+        <button type="button">ENTER</button>
+    </div>
+</body>
+</html>
+
+
+
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+
+    body{
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        background-image: url(login.jpg);
+        background-position: center;
+        background-size: cover;
+    }
+
+    .wrapper{
+        display: flex;
+        margin: auto;
+        border-radius: 20px;
+        background-color: #F7E6C4;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 400px;
+        height: 500px;
+
+        img{
+            width: 300px;
+        }
+    }
+
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+
+        input{
+            margin-top: 10px;
+            width: 80%; 
+            padding: 10px; 
+            border-radius: 10px; 
+            border: 1px solid #876647; 
+            font-size: 16px;
+        }
+    }
+
+    button {
+        width: 18%;
+        margin-top: 15px;
+        background-color: #876647;
+        color: white;
+        border-radius: 50px;
+        padding: 10px 0px;
+    }
+
+</style>
