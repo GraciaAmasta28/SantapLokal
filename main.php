@@ -27,7 +27,7 @@ if (!isset($_SESSION["username"])) {
                 Explore
             </button>
             <ul class="dropdown-menu">
-                <li><button class="dropdown-item" type="button">Bermitra</button></li>
+                <li><a class="dropdown-item" href="formMitra.html">Bermitra</a></li>
                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
             </ul>
         </div>
