@@ -27,7 +27,7 @@ if (!isset($_SESSION["username"])) {
                 Explore
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="formMitra.html">Bermitra</a></li>
+                <li><a class="dropdown-item" href="formMitra.php">Bermitra</a></li>
                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
             </ul>
         </div>
@@ -36,15 +36,18 @@ if (!isset($_SESSION["username"])) {
 
     <div class="wrapper">
 
-        <div class="card">
-            <div class="konteks">
-                <p class="judul">Warung Andre Cakwe</p>
-                <p>Jl. Margosari Gg. III, RT.02/RW.01, Salatiga,<br>Kec. Sidorejo, Kota Salatiga, Jawa Tengah 5071</p>
-                <p>Start From: 5.000 - 35.000</p>
+        <a href="AndreCakwe.html">
+            <div class="card">
+                <div class="konteks">
+                    <p class="judul">Warung Andre Cakwe</p>
+                    <p>Jl. Margosari Gg. III, RT.02/RW.01, Salatiga,<br>Kec. Sidorejo, Kota Salatiga, Jawa Tengah 5071</p>
+                    <p>Start From: 5.000 - 35.000</p>
+                </div>
+                <img src="andre.png" alt="andre">
             </div>
-            <img src="andre.png" alt="andre">
-        </div>
+        </a>
 
+        <a href="formrestoallmixjuice.html">
         <div class="card">
             <div class="konteks">
                 <p class="judul">Allmix Juice and Chocolate</p>
@@ -53,15 +56,19 @@ if (!isset($_SESSION["username"])) {
             </div>
             <img src="juice.png" alt="juice">
         </div>
+        </a>
 
-        <div class="card">
-            <div class="konteks">
-                <p class="judul">Mie Ayam Perahu</p>
-                <p>Jl. Perahu No.4, Kalicacing, Kec. Sidomukti, <br>Kota Salatiga, Jawa Tengah 5071</p>
-                <p>Start From: 8.500 - 30.000</p>
+        
+        <a href="formrestomieperahu.html">
+            <div class="card">
+                <div class="konteks">
+                    <p class="judul">Mie Ayam Perahu</p>
+                    <p>Jl. Perahu No.4, Kalicacing, Kec. Sidomukti, <br>Kota Salatiga, Jawa Tengah 5071</p>
+                    <p>Start From: 8.500 - 30.000</p>
+                </div>
+                <img src="prahu.png" alt="prahu">
             </div>
-            <img src="prahu.png" alt="prahu">
-        </div>
+        </a>
 
     </div>
 
@@ -134,4 +141,8 @@ if (!isset($_SESSION["username"])) {
             border-radius: 25px;
         }
     }
+    a{
+        text-decoration: none;
+    }
+
 </style>
