@@ -4,6 +4,27 @@ session_start();
 if (!isset($_SESSION["username"])) {
     header("Location: login.php");
 }
+
+$sessionMitra = $_SESSION['is_mitra'];
+$sessionUsername = $_SESSION['username'];
+$sessionId = $_SESSION['id'];
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    $queryMitra = "update users set is_mitra = 1 where id = '$sessionId'";
+
+    if (mysqli_query($conn, $queryMitra)) {
+        $sessionMitra = 1;
+        echo "<script>alert('Anda sekarang menjadi mitra!');</script>";
+        header("Location : main.php");
+    } else {
+        echo "Terjadi kesalahan: " . $conn->error;
+    }
+}
+
+
+$i = 1;
+$queryTampil = "select * from resto";
+$baris = mysqli_query($conn, $queryTampil);
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +48,12 @@ if (!isset($_SESSION["username"])) {
                 Explore
             </button>
             <ul class="dropdown-menu">
+                <?php if($sessionMitra == 1): ?>
                 <li><a class="dropdown-item" href="formMitra.php">Bermitra</a></li>
+                    <?php else: ?>
+                        
+                <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Daftar Mitra</a></li>
+                <?php endif; ?>
                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
             </ul>
         </div>
@@ -36,41 +62,40 @@ if (!isset($_SESSION["username"])) {
 
     <div class="wrapper">
 
-        <a href="AndreCakwe.html">
+        <?php foreach($baris as $list): ?>
+        <a href="pageResto.php?id=<?php echo $list['id']; ?>">
             <div class="card">
                 <div class="konteks">
-                    <p class="judul">Warung Andre Cakwe</p>
-                    <p>Jl. Margosari Gg. III, RT.02/RW.01, Salatiga,<br>Kec. Sidorejo, Kota Salatiga, Jawa Tengah 5071</p>
-                    <p>Start From: 5.000 - 35.000</p>
+                    <p class="judul"><?php echo $list['nama']; ?></p>
+                    <p><?php echo $list['alamat']; ?></p>
+                    <p>Start From: <?php echo 'Rp' . number_format($list['min_price'], 0, ',', '.'); ?> - <?php echo 'Rp' . number_format($list['max_price'], 0, ',', '.'); ?></p>
                 </div>
-                <img src="andre.png" alt="andre">
+                <img src="<?php echo $list['foto']; ?>" alt="<?php echo $list['foto']; ?>">
             </div>
         </a>
+        <?php endforeach; ?>
 
-        <a href="formrestoallmixjuice.html">
-        <div class="card">
-            <div class="konteks">
-                <p class="judul">Allmix Juice and Chocolate</p>
-                <p>Jl. Kemiri Raya No.6, Kec. Sidorejo, Kota Salatiga,<br>Jawa Tengah 5071</p>
-                <p>Start From: 6.000 - 15.000</p>
-            </div>
-            <img src="juice.png" alt="juice">
-        </div>
-        </a>
-
-        
-        <a href="formrestomieperahu.html">
-            <div class="card">
-                <div class="konteks">
-                    <p class="judul">Mie Ayam Perahu</p>
-                    <p>Jl. Perahu No.4, Kalicacing, Kec. Sidomukti, <br>Kota Salatiga, Jawa Tengah 5071</p>
-                    <p>Start From: 8.500 - 30.000</p>
-                </div>
-                <img src="prahu.png" alt="prahu">
-            </div>
-        </a>
 
     </div>
+
+    <!-- modal bermitra -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="display: grid;
+    align-items: center;margin-top: 50%;">
+            <div class="modal-header" style="margin: auto;">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Apakah anda yakin untuk bermitra?</h1>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-footer" style="display: flex; margin: auto; gap: 15px;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <form method="post">
+                    <input value="Ya" type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

@@ -1,3 +1,25 @@
+<?php 
+require 'connection.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = htmlspecialchars($_POST['username']);
+    $password = htmlspecialchars(password_hash($_POST['password'], PASSWORD_BCRYPT));
+    $is_mitra = $_POST['is_mitra'];
+
+    $queryRegis = "insert into users (username, password, is_mitra) values ('$username', '$password', '$is_mitra')";
+    
+    if (mysqli_query($conn, $queryRegis)) {
+        echo "<script>
+        alert('Registrasi Berhasil! Anda akan diarahkan ke halaman Login.')
+        window.location.href ='login.php';
+        </script>";
+        // header("Location: login.php");
+        exit();
+    } else {
+        echo "error: " . $queryRegis . "<br>" . $conn->error;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +46,7 @@
             Aakah Ingin Bermitra?
 
             <div class="checkbox-label" >
-                <input type="checkbox" id="termsCheckbox" name="terms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <input type="checkbox" id="termsCheckbox" name="is_mitra" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <label for="termsCheckbox">Ya</label>
             </div>
 

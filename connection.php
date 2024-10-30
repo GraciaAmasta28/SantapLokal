@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "test");
+$conn = mysqli_connect("localhost", "root", "", "db_user");
 
 
 ?>

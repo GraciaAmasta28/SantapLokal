@@ -3,29 +3,37 @@ require 'connection.php';
 
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == "POST"){
-    $username = htmlspecialchars($_POST['username']);
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $username = htmlspecialchars($_POST['username']); // Sanitasi input
+    $password = htmlspecialchars($_POST['password']);
 
-    $queryLogin = "SELECT * FROM login WHERE username = '$username'";
+    $queryLogin = "select * from users where username = '$username'";
+
     $hasil = mysqli_query($conn, $queryLogin);
 
-    if($hasil->num_rows == 1){
-        $_SESSION['username'] = $username;
-        header("Location: main.php");
-        exit();
-    }else{
-        $queryInsert = "INSERT INTO login (username) VALUES ('$username')";
-        if(mysqli_query($conn, $queryInsert)){
-            $_SESSION['username'] = $username;
-            echo "<script>alert('Registrasi berhasil');</script>";
-            header("Location: main.php");
-            exit();
-        }else{
-            echo "<script>alert('Gagal Registrasi');</script>";
-        }
-    }
-}
+    if ($hasil->num_rows > 0) {
+        $row = $hasil->fetch_assoc();
 
+        if (password_verify($password, $row['password'])) {
+            // set session username, id, dan informasi mitra
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['is_mitra'] = $row['is_mitra'];
+            $_SESSION['id'] = $row['id'];
+
+            header("Location: main.php");
+        } else {
+            echo "Password Salah";
+        }
+    } else {
+        echo "<script>alert('Username Tidak ditemukan');
+        window.location.href = 'login.php';
+        </script>
+        ";
+    }
+
+
+    $conn->close();
+}
 if(isset($_SESSION["username"])){
     header("Location: main.php");
     exit();
