@@ -22,6 +22,10 @@
       <div class="Kotak">
         <a href="login.php">Login Terlebih Dahulu</a>
       </div>
+      <div class="Kotak">
+      <a href="registrasi.php">Registrasi</a>
+      </div>
+      
     </div>
     <div class="Food"><img src="Food.png" alt=""></div>
   </div>

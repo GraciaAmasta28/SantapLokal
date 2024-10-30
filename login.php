@@ -44,7 +44,9 @@ if(isset($_SESSION["username"])){
         <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
             <label for="">LOGIN</label>
             <input type="text" name="username" id="username" required>
-            <button type="submit">ENTER</button>
+            <label for="">Password</label>
+            <input type="password" name="password" required>
+            <input type="submit" value="Save">
         </form>
     </div>
 </body>
@@ -93,9 +95,9 @@ if(isset($_SESSION["username"])){
 
         input{
             margin-top: 10px;
-            width: 80%; 
+            width: 90%; 
             padding: 10px; 
-            border-radius: 10px; 
+            border-radius: 5px; 
             border: 1px solid #876647; 
             font-size: 16px;
         }
@@ -110,5 +112,17 @@ if(isset($_SESSION["username"])){
         }
     }
     
+    input[type="submit"] {
+        background-color: #AAB396;
+        color: black;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
+    input[type="submit"]:hover {
+        background-color: #9BAE58;
+    }
 </style>
