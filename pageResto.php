@@ -107,6 +107,20 @@ if (isset($_GET['id'])) {
         padding-bottom: 15px;
         position: sticky;
     }
+
+    .gambar{
+        display: flex;
+        margin: auto;
+        width: 15%;
+        height: auto;
+    }
+
+    .explore{
+        position: fixed;
+        left: 50px;
+        top: 100px;
+    }
+
     main {
         width: 100%;
         margin: 10px auto;
@@ -167,11 +181,15 @@ if (isset($_GET['id'])) {
 
                 .card{
                     text-align: center;
+                    width: 250px;
                     background-color: #d9d9d9;
                     padding: 20px;
                     border-radius: 10px;
+                    display: flex;
+                    align-items: center;
 
                     img{
+                        align-items: center;
                         width: 200px;
                         height: 200px;
                         object-fit: cover;
