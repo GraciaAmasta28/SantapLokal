@@ -4,7 +4,7 @@ require 'connection.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars(password_hash($_POST['password'], PASSWORD_BCRYPT));
-    $is_mitra = $_POST['is_mitra'];
+    $is_mitra = $_POST['is_mitra'] ? 1 : 0;
 
     $queryRegis = "insert into users (username, password, is_mitra) values ('$username', '$password', '$is_mitra')";
     
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Aakah Ingin Bermitra?
 
             <div class="checkbox-label" >
-                <input type="checkbox" id="termsCheckbox" name="is_mitra" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <input type="checkbox" id="termsCheckbox" name="is_mitra" value="0" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <label for="termsCheckbox">Ya</label>
             </div>
 
