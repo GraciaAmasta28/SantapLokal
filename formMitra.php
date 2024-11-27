@@ -7,6 +7,7 @@ if (!isset($_SESSION["username"])) {
 
 $sessionUsername = $_SESSION['username'];
 $sessionMitra = $_SESSION['is_mitra'];
+$sessionUserId = $_SESSION['users_id'];
 
 
 
@@ -69,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
             // Insert data restoran ke database
             $query = "INSERT INTO resto (added_by, nama, alamat, min_price, max_price, foto) 
-                      VALUES ('$sessionUsername', '$resto', '$alamat', '$minPrice', '$maxPrice', '$target_file')";
+                      VALUES ('$sessionUserId', '$resto', '$alamat', '$minPrice', '$maxPrice', '$target_file')";
 
             if (mysqli_query($conn, $query)) {
 
@@ -128,112 +129,175 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Bermitra</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="styleMitra.css">
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <img src="Screenshot_2024-09-26_073909-removebg-preview.png" alt="Santaplokal Logo" class="logo">
-        </header>
 
-        <section class="form-section">
-            <h2>FORM BERMITRA:</h2>
+    <?php include 'header.php' ?>
+
+    <div class="container mt-5">
+        <section class="form-section p-4">
+            <h2 class="text-center mb-4">FORM BERMITRA</h2>
             <form method="post" enctype="multipart/form-data" autocomplete="off">
-                <label for="nama">NAMA KEDAI/RESTO:</label>
-                <input type="text" id="nama" name="resto">
+                <!-- Nama Kedai -->
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Nama Kedai/Resto:</label>
+                    <input type="text" class="form-control" id="nama" name="resto" placeholder="Masukkan nama kedai" required>
+                </div>
 
-                <label for="alamat">ALAMAT:</label>
-                <textarea id="alamat" name="alamat"></textarea>
+                <!-- Alamat -->
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat:</label>
+                    <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Masukkan alamat kedai" required></textarea>
+                </div>
 
-                <label for="harga">HARGA TERENDAH:</label>
-                <input type="text" id="harga" name="min-price">
+                <!-- Harga -->
+                <div class="mb-3">
+                    <label for="min-price" class="form-label">Harga Terendah:</label>
+                    <input type="number" class="form-control" id="min-price" name="min-price" placeholder="Masukkan harga terendah" required>
+                </div>
+                <div class="mb-3">
+                    <label for="max-price" class="form-label">Harga Tertinggi:</label>
+                    <input type="number" class="form-control" id="max-price" name="max-price" placeholder="Masukkan harga tertinggi" required>
+                </div>
 
-                <label for="harga">HARGA TERTINGGI:</label>
-                <input type="text" id="harga" name="max-price">
+                <!-- Foto -->
+                <div class="mb-4">
+                    <label for="foto" class="form-label">Foto Restoran:</label>
+                    <input class="form-control" type="file" id="foto" name="foto" accept=".jpg, .jpeg, .png" required>
+                </div>
 
-                <label for="foto">FOTO RESTORAN</label>
-                <input type="file" name="foto" id="foto" accept=".jpg, .jpeg, .png">
+                <!-- Data Menu -->
+                <h3 class="mb-3">Data Menu</h3>
+                <div id="menu-container">
+                    <!-- Menu inputs will be dynamically added here -->
+                </div>
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-secondary w-100" id="add-menu-button">Tambah Menu (Max 7)</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-danger w-100" id="del-menu-button">Batalkan Menu</button>
+                    </div>
+                </div>
 
-                <h3>Data Menu</h3>
-            <div id="menu-container">
-                <!-- Tempat input menu akan di sini -->
-            </div>
 
-            <button type="button" id="add-menu-button">Tambah Menu (Max 7)</button><br>
-            <button type="button" id="del-menu-button">Batalkan Menu</button><br>
-            <input type="submit" value="Submit">
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <input type="submit" class="btn btn-success w-100" value="Submit">
+                    </div>
+                    <div class="col-6">
+                        <a href="/main.php" class="btn btn-warning w-100 text-center">Kembali</a>
+                    </div>
+                </div>
             </form>
         </section>
     </div>
 
-    <footer style="background-color: #AAB396; color: white;" class="mt-5 w-screen">
-        <div class="container">
-            <div class="row text-md-left">
-                <div class="col-sm-12 col-lg-3 col-md-6 mb-4">
-                    <p>Jelajahi Kuliner Lokal Dengan Gaya</p>
-                </div>
-
-                <div class="col-sm-12 col-lg-3 col-md-6 mb-4">
-                    <p>Created by Gracia Amasta Devanti, Christina Sun, Clarista Quinny Majesty S</p>
-                </div>
-
-                <div class="col-md-6 col-lg-3 d-flex justify-content-center">
-                    <div>
-                      <h6 class="mb-4">Link</h6>
-                      <p class="lh-1">
-                        <a href="#" class="text-reset">Santap Lokal</a>
-                      </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 text-end">
-                    <div class="row">
-                         <div class="col-12">
-                            <img src="Screenshot_2024-09-26_073909-removebg-preview.png" alt="Santaplokal Logo" class="footer-logo float-end">
-                          </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <footer class="mt-5 py-4 bg-dark text-white text-center" style="margin-top: auto;">
+        <p class="mb-0">© 2024 SantapLokal. All rights reserved.</p>
     </footer>
 
+    <script>
+        let menuCount = 0;
+        document.getElementById('add-menu-button').addEventListener('click', function() {
+            if (menuCount < 7) {
+                menuCount++;
+                const menuDiv = document.createElement('div');
+                menuDiv.classList.add('menu-item');
+                menuDiv.setAttribute('id', `menu-${menuCount}`);
+                menuDiv.innerHTML = `
+                    <h5>Menu ${menuCount}</h5>
+                    <div class="mb-3">
+                        <label for="menu_name_${menuCount}" class="form-label">Nama Menu:</label>
+                        <input type="text" class="form-control" name="menu_name[]" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price_${menuCount}" class="form-label">Harga:</label>
+                        <input type="number" class="form-control" name="price[]" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="photo_${menuCount}" class="form-label">Foto Menu:</label>
+                        <input class="form-control" type="file" name="photo[]" accept=".jpg, .jpeg, .png" required>
+                    </div>
+                `;
+                document.getElementById('menu-container').appendChild(menuDiv);
+            } else {
+                alert("Maksimal 7 menu dapat ditambahkan.");
+            }
+        });
+
+        document.getElementById('del-menu-button').addEventListener('click', function() {
+            if (menuCount > 0) {
+                const lastMenu = document.getElementById(`menu-${menuCount}`);
+                document.getElementById('menu-container').removeChild(lastMenu);
+                menuCount--;
+            } else {
+                alert('Belum ada menu yang ditambahkan!');
+            }
+        });
+    </script>
 </body>
+
 </html>
 
-<script>
-    let menuCount = 0;
-    document.getElementById('add-menu-button').addEventListener('click', function() {
-        if (menuCount < 7) {
-            menuCount++;
-            const menuDiv = document.createElement('div');
-            menuDiv.setAttribute('id', `menu-${menuCount}`);
-            menuDiv.innerHTML = `
-                    <h4>Menu ${menuCount}</h4>
-                    <label for="menu_name_${menuCount}">Nama Menu:</label>
-                    <input type="text" name="menu_name[]" required><br>
-                    <label for="price_${menuCount}">Harga:</label>
-                    <input type="number" name="price[]" step="0.01" required><br>
-                    <label for="photo_${menuCount}">Foto Menu:</label>
-                    <input type="file" name="photo[]" accept=".jpg, .jpeg, .png" required><br>
-                `;
-            document.getElementById('menu-container').appendChild(menuDiv);
-        } else {
-            alert("Maksimal 7 menu dapat ditambahkan.");
-        }
-    });
-    document.getElementById('del-menu-button').addEventListener('click', function() {
-        if (menuCount > 0) {
-            const lastMenu = document.getElementById(`menu-${menuCount}`);
-            document.getElementById('menu-container').removeChild(lastMenu);
-            menuCount -= 1;
-        } else {
-            alert('Anda belum menambahkan Menu!');
-        }
-    });
-</script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #F7F5F2;
+        color: #333;
+    }
+
+    .form-section {
+        background-color: #aab396;
+        color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    label {
+        font-size: 16px;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    input,
+    textarea {
+        background-color: #f9f7f3;
+        border: 1px solid #7c2f1b;
+        border-radius: 5px;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    body>footer {
+        margin-top: auto;
+    }
+</style>
