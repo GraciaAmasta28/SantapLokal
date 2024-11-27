@@ -1,5 +1,6 @@
-<?php 
+<?php
 require 'connection.php';
+require 'globalcss.php';
 
 session_start();
 
@@ -18,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // set session username, id, dan informasi mitra
             $_SESSION['username'] = $row['username'];
             $_SESSION['is_mitra'] = $row['is_mitra'];
-            $_SESSION['id'] = $row['id'];
+            $_SESSION['users_id'] = $row['id'];
 
             header("Location: main.php");
         } else {
@@ -34,103 +35,95 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $conn->close();
 }
-if(isset($_SESSION["username"])){
+if (isset($_SESSION["username"])) {
     header("Location: main.php");
     exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back_ios" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Santap Lokal Login</title>
 </head>
+
 <body>
-    <div class="wrapper">
-        <img src="logo.png" alt="logo">
-        <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
-            <label for="">LOGIN</label>
-            <input type="text" name="username" id="username" required>
-            <label for="">Password</label>
-            <input type="password" name="password" required>
-            <input type="submit" value="Save">
-        </form>
+    <!-- Wrapper Utama -->
+    <div class="d-flex align-items-center justify-content-center vh-100 bg-light">
+        <div class="card shadow-lg" style="width: 400px; border-radius: 15px;">
+            <div class="card-body text-center p-4">
+                <!-- Logo -->
+                <img src="logo.png" alt="SantapLokal" width="120" class="mb-4">
+                <h4 class="mb-3" style="color: #5c3d00; font-weight: 700;">Login ke SantapLokal</h4>
+                <!-- Form Login -->
+                <form method="post" action="" autocomplete="off" class="mt-3">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-bold">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-bold">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan password" required>
+                    </div>
+                    <button type="submit" class="btn w-100 text-white" style="background-color: #AAB396;">Masuk</button>
+                </form>
+                <!-- Link Kembali -->
+                <a href="/" class="text-decoration-none mt-3 d-block" style="color: #5c3d00;">
+                    <i class="bi bi-arrow-left-circle"></i> Kembali ke Beranda
+                </a>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>
 
 
 
 <style>
-    *{
+    * {
         padding: 0;
         margin: 0;
     }
 
-    body{
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        background-image: url(login.jpg);
-        background-position: center;
-        background-size: cover;
-    }
-
-    .wrapper{
-        display: flex;
-        margin: auto;
-        border-radius: 20px;
+    body {
         background-color: #F7E6C4;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 400px;
-        height: 500px;
-
-        img{
-            width: 300px;
-        }
+        /* Warna latar belakang yang konsisten */
     }
 
-    form{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-
-        input{
-            margin-top: 10px;
-            width: 90%; 
-            padding: 10px; 
-            border-radius: 5px; 
-            border: 1px solid #876647; 
-            font-size: 16px;
-        }
-        button {
-            width: fit-content;
-            margin-top: 15px;
-            background-color: #876647;
-            color: white;
-            border-radius: 50px;
-            padding: 10px 5px;
-            cursor: pointer;
-        }
-    }
-    
-    input[type="submit"] {
-        background-color: #AAB396;
-        color: black;
-        padding: 10px;
+    .card {
         border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
+        /* Hapus border default kartu */
     }
 
-    input[type="submit"]:hover {
+    .card-body {
+        border-radius: 15px;
+        /* Menjaga sudut membulat */
+        background: #ffffff;
+        /* Warna putih untuk form */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        /* Efek bayangan */
+    }
+
+    .form-control {
+        border-radius: 5px;
+        /* Atur radius input */
+        border: 1px solid #876647;
+        /* Warna border sesuai tema */
+    }
+
+    .btn:hover {
         background-color: #9BAE58;
+        /* Warna hover tombol */
+    }
+
+    a {
+        font-size: 14px;
+        font-weight: 600;
     }
 </style>

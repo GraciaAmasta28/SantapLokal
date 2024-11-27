@@ -1,4 +1,4 @@
-<?php 
+<?php
 require 'connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,16 +7,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $is_mitra = $_POST['is_mitra'] ? 1 : 0;
 
     $queryRegis = "insert into users (username, password, is_mitra) values ('$username', '$password', '$is_mitra')";
-    
-    if (mysqli_query($conn, $queryRegis)) {
+
+    $cekUser = "select * from users where username = '$username'";
+
+    $hasilCek = $conn->query($cekUser);
+
+    if ($hasilCek->num_rows > 0) {
+        echo "
+        <script>
+        alert('Username sudah terdaftar, gunakan username lain.');
+        window.location.href='registrasi.php';
+        </script>
+        ";
+    } else {
+        $conn->query($queryRegis);
         echo "<script>
         alert('Registrasi Berhasil! Anda akan diarahkan ke halaman Login.')
         window.location.href ='login.php';
         </script>";
-        // header("Location: login.php");
         exit();
-    } else {
-        echo "error: " . $queryRegis . "<br>" . $conn->error;
     }
 }
 ?>
@@ -26,85 +35,93 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form dengan Syarat dan Ketentuan</title>
+    <title>Registrasi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back_ios" />
 </head>
 
-<body>
-    <div class="container">
-        <div class="logo">
-            <img src="logo.png" alt="logo">
-        </div>
-        <form method="POST" action="">
-            <label for="username">USERNAME</label>
-            <input type="text" id="username" name="username" placeholder="Masukkan username">
-
-            <label for="password">PASSWORD</label>
-            <input type="password" id="password" name="password" placeholder="Masukkan password">
-
-            Aakah Ingin Bermitra?
-
-            <div class="checkbox-label" >
-                <input type="checkbox" id="termsCheckbox" name="is_mitra" value="0" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <label for="termsCheckbox">Ya</label>
+<body class="bg-light">
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="card shadow-lg p-4" style="width: 400px; border-radius: 15px;">
+            <!-- Logo -->
+            <div class="text-center mb-4">
+                <img src="logo.png" alt="Santap Lokal" width="120">
+                <h4 class="mt-3" style="color: #5c3d00;">Registrasi</h4>
             </div>
-
-            <input type="submit" value="Save">
-        </form>
+            <!-- Form -->
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label for="username" class="form-label fw-bold">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-bold">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required>
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="isMitra" name="is_mitra" value="1">
+                    <label class="form-check-label" for="isMitra">Bermitra dengan kami?</label>
+                </div>
+                <button type="submit" class="btn w-100 text-white" style="background-color: #AAB396;">Daftar</button>
+            </form>
+            <!-- Back -->
+            <div class="text-center mt-3">
+                <a href="/" class="text-decoration-none" style="color: #5c3d00;">
+                    <i class="bi bi-arrow-left-circle"></i> Kembali ke Beranda
+                </a>
+            </div>
+        </div>
     </div>
 
-
-
-
-    <!--
+    <!-- Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Syarat dan Ketentuan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Dengan mendaftar sebagai mitra, Anda menyetujui semua syarat dan ketentuan kami.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelButton">Batal</button>
+                    <button type="button" class="btn btn-primary" id="agreeButton">Setuju</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        const termsCheckbox = document.getElementById('termsCheckbox');
-        const submitBtn = document.getElementById('submitBtn');
-
-        termsCheckbox.addEventListener('change', function(){
-            if (this.checked){
-                window.open('snk.html', '_blank', 'width=600, height=400');
-            }
-        })
-    </script> -->
-</body>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" id="closeButton" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        INI SYARAT DAN KETENTUAN
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="cancelButton" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="yesButton" data-bs-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-        const termsCheckbox = document.getElementById('termsCheckbox');
+        const isMitraCheckbox = document.getElementById('isMitra');
+        const agreeButton = document.getElementById('agreeButton');
         const cancelButton = document.getElementById('cancelButton');
-        const closeButton = document.getElementById('closeButton');
-        const yesButton = document.getElementById('yesButton');
-        // Reset checkbox ketika tombol cancel di modal ditekan
+
+        // Tangkap elemen modal menggunakan Bootstrap
+        const modalElement = document.getElementById('termsModal');
+        const modalInstance = new bootstrap.Modal(modalElement);
+
+        // Tampilkan modal ketika checkbox di klik
+        isMitraCheckbox.addEventListener('change', () => {
+            if (isMitraCheckbox.checked) {
+                modalInstance.show();
+            }
+        });
+
+        // Setujui syarat dan tutup modal
+        agreeButton.addEventListener('click', () => {
+            isMitraCheckbox.checked = true; // Pastikan checkbox tetap tercentang
+            modalInstance.hide(); // Tutup modal
+        });
+
+        // Batalkan dan ubah checkbox menjadi tidak dicentang
         cancelButton.addEventListener('click', () => {
-            termsCheckbox.checked = false; // Set checkbox tidak tercentang
-        });
-        closeButton.addEventListener('click', () => {
-            termsCheckbox.checked = false; // Set checkbox tidak tercentang
-        });
-        yesButton.addEventListener('click', () => {
-            termsCheckbox.checked = true; // Set checkbox tidak tercentang
+            isMitraCheckbox.checked = false; // Ubah checkbox menjadi tidak dicentang
+            modalInstance.hide(); // Tutup modal
         });
     </script>
+</body>
 
 </html>
 
@@ -112,77 +129,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <style>
-    body{
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        background-image: url(login.jpg);
-        background-position: center;
-        background-size: cover;
-    }
-
-    .container {
+    body {
         background-color: #F7E6C4;
-        width: 400px;
-        padding: 20px;
-        margin: 50px auto;
-        border-radius: 10px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        align-items: center;
-    }
-    
-    .logo{
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-
-        img{
-            width: 300px;
-        }
+        /* Warna latar belakang lembut */
     }
 
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    label {
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
-
-    .checkbox-label {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .checkbox-label input {
-        margin-right: 10px;
-    }
-
-    input[type="submit"] {
-        background-color: #AAB396;
-        color: black;
-        padding: 10px;
+    .card {
         border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
+        border-radius: 15px;
+        background-color: #ffffff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    input[type="submit"]:hover {
+    .btn:hover {
         background-color: #9BAE58;
+        /* Warna hover tombol */
+    }
+
+    a {
+        font-weight: 600;
+        font-size: 14px;
     }
 </style>
