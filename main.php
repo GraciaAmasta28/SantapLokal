@@ -7,20 +7,7 @@ if (!isset($_SESSION["username"])) {
 
 $sessionMitra = $_SESSION['is_mitra'];
 $sessionUsername = $_SESSION['username'];
-$sessionId = $_SESSION['id'];
-
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    $queryMitra = "update users set is_mitra = 1 where id = '$sessionId'";
-
-    if (mysqli_query($conn, $queryMitra)) {
-        $sessionMitra = 1;
-        echo "<script>alert('Anda sekarang menjadi mitra!');</script>";
-        header("Location : main.php");
-    } else {
-        echo "Terjadi kesalahan: " . $conn->error;
-    }
-}
-
+$sessionId = $_SESSION['users_id'];
 
 $i = 1;
 $queryTampil = "select * from resto";
@@ -33,141 +20,132 @@ $baris = mysqli_query($conn, $queryTampil);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Santap Lokal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="Untitled-1.css">
+    <title>Welcome, <?php echo $sessionUsername ?>!</title>
 </head>
 
 <body>
-    <div class="header sticky-top">
-        <img class="gambar" src="logo.png" alt="logo">
+    <?php require 'header.php' ?>
 
-        <div class="explore">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: larger; background-color: #5c3d00; color: white;">
-                Explore
-            </button>
-            <ul class="dropdown-menu">
-                <?php if($sessionMitra == 1): ?>
-                <li><a class="dropdown-item" href="formMitra.php">Bermitra</a></li>
-                    <?php else: ?>
-                        
-                <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Daftar Mitra</a></li>
-                <?php endif; ?>
-                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-            </ul>
-        </div>
-
-    </div>
-
-    <div class="wrapper">
-
-        <?php foreach($baris as $list): ?>
-        <a href="pageResto.php?id=<?php echo $list['id']; ?>">
-            <div class="card">
-                <div class="konteks">
-                    <p class="judul"><?php echo $list['nama']; ?></p>
-                    <p><?php echo $list['alamat']; ?></p>
-                    <p>Start From: <?php echo 'Rp' . number_format($list['min_price'], 0, ',', '.'); ?> - <?php echo 'Rp' . number_format($list['max_price'], 0, ',', '.'); ?></p>
+    <main class="container my-5">
+        <div class="row g-4">
+            <?php foreach ($baris as $list): ?>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card resto-card">
+                        <a href="pageResto.php?id=<?php echo $list['id']; ?>">
+                            <img src="<?php echo $list['foto']; ?>" class="card-img-top" alt="<?php echo $list['foto']; ?>">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $list['nama']; ?></h5>
+                            <p class="card-text"><?php echo $list['alamat']; ?></p>
+                            <p class="card-price">
+                                Start From: <?php echo 'Rp' . number_format($list['min_price'], 0, ',', '.'); ?> - <?php echo 'Rp' . number_format($list['max_price'], 0, ',', '.'); ?>
+                            </p>
+                            <a href="simpanResto.php?id=<?php echo $list['id']; ?>" class="btn btn-save">Simpan</a>
+                        </div>
+                    </div>
                 </div>
-                <img src="<?php echo $list['foto']; ?>" alt="<?php echo $list['foto']; ?>">
-            </div>
-        </a>
-        <?php endforeach; ?>
-
-
-    </div>
-
-    <!-- modal bermitra -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="display: grid;
-    align-items: center;margin-top: 50%;">
-            <div class="modal-header" style="margin: auto;">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Apakah anda yakin untuk bermitra?</h1>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-            </div>
-            <div class="modal-footer" style="display: flex; margin: auto; gap: 15px;">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
-                <form method="post">
-                    <input value="Ya" type="submit" class="btn btn-primary">
-                </form>
-            </div>
+            <?php endforeach; ?>
         </div>
-    </div>
-</div>
+    </main>
 
-
-
+    <footer class="py-4 bg-dark text-white text-center" style="margin-top: auto;">
+        <p class="mb-0">© 2024 SantapLokal. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>
 
 
 <style>
-    .header {
+    /* Global Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #F7F5F2;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    /* Konten Utama */
+    main {
+        padding: 20px 0;
+    }
+
+    /* Card Styles */
+    .resto-card {
+        border: none;
+        border-radius: 10px;
+        background-color: #FFF;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .resto-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .resto-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .card-body {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    .card-price {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #AAB396;
+    }
+
+    .btn-save {
         background-color: #AAB396;
-        border-bottom: 1px solid #AAB396;
-        margin-bottom: 5px;
-        width: 100%;
-        height: 150px;
-        display: flex;
-        padding-bottom: 15px;
-        position: sticky;
-    }
-
-    .judul {
-        font-size: 25px;
-        font-weight: 700;
-    }
-
-    .explore{
-        position: absolute;
-        top: 100px;
-        left: 10px;
-    }
-
-    .gambar {
-        margin: auto;
-        justify-content: center;
-        align-items: center;
-        width: 220px;
-        height: auto;
-    }
-
-    .wrapper {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        margin: auto;
-        width: 95%;
-        gap: 20px;
-        margin-top: 50px;
-        padding-top: 15px;
-        justify-content: space-around;
-    }
-
-    .card {
-        background-color: #F7E6C4;
-        display: flex;
-        margin: auto;
+        color: white;
+        padding: 10px 15px;
         border-radius: 20px;
-        margin-top: 15px;
-        flex-direction: row;
-        justify-content: space-around;
-        gap: 0px;
-        align-items: center;
-        width: 100%;
-        height: 40vh;
-
-        img {
-            margin-right: 25px;
-            width: 220px;
-            height: 220px;
-            border-radius: 25px;
-        }
-    }
-    a{
+        text-transform: uppercase;
+        font-weight: bold;
         text-decoration: none;
+        transition: background-color 0.3s ease;
     }
 
+    .btn-save:hover {
+        background-color: #9BAE58;
+    }
+
+    /* Footer */
+    .footer {
+        background-color: #AAB396;
+        color: white;
+    }
+
+    body>footer {
+        margin-top: auto;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
 </style>

@@ -38,177 +38,209 @@ if (isset($_GET['id'])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=
-    , initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="global.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <title><?php echo $resto['nama']; ?></title>
+    <title>SantapLokal | <?php echo $resto['nama']; ?></title>
 </head>
 
-<body>
-<div class="header sticky-top">
-        <img class="gambar" src="logo.png" alt="logo">
+<body style="background-color: #F7F5F2;">
 
-        <div class="explore">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: larger; background-color: #5c3d00; color: white;">
-                Explore
-            </button>
-            <ul class="dropdown-menu">
-                <?php if($sessionMitra == 1): ?>
-                <li><a class="dropdown-item" href="formMitra.php">Bermitra</a></li>
-                    <?php else: ?>
-                        
-                <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Daftar Mitra</a></li>
-                <?php endif; ?>
-                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-            </ul>
-        </div>
+    <?php require 'header.php' ?>
 
-    </div>
     <main>
-        <div class="wrapper">
-            <div class="resto">
-                <div class="info">
-                    <p class="judul"><?php echo $resto['nama']; ?></p>
-                    <p class="alamat"><?php echo $resto['alamat']; ?></p>
-                    <p class="harga">Start From: <?php echo 'Rp' . number_format($resto['min_price'], 0, ',', '.'); ?> - <?php echo 'Rp' . number_format($resto['max_price'], 0, ',', '.'); ?></p>
+        <div class="container py-5">
+            <!-- Informasi Restoran -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h1 class="display-4"><?php echo $resto['nama']; ?></h1>
+                    <p class="lead"><?php echo $resto['alamat']; ?></p>
+                    <p class="h5">Start From: <?php echo 'Rp' . number_format($resto['min_price'], 0, ',', '.'); ?> - <?php echo 'Rp' . number_format($resto['max_price'], 0, ',', '.'); ?></p>
                 </div>
-                <img src="<?php echo $resto['foto']; ?>" alt="<?php echo $resto['nama']; ?>">
+                <div class="col-md-6">
+                    <!-- Gambar Restoran -->
+                    <img src="<?php echo $resto['foto']; ?>" class="img-fluid rounded resto-img" alt="<?php echo $resto['nama']; ?>">
+                </div>
             </div>
-            <div class="garis"></div>
+
+            <hr class="my-5">
+
+            <!-- Daftar Menu -->
             <?php if ($menus && $menus->num_rows > 0): ?>
-                <div class="wrapper-menu">
+                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
                     <?php foreach ($menus as $menu): ?>
-                        <div class="card">
-                            <img src="<?php echo $menu['foto']; ?>" alt="<?php echo $resto['nama']; ?>">
-                            <p class="menu"><?php echo $menu['nama']; ?></p>
-                            <p class="harga">Harga: <?php echo 'Rp' . number_format($menu['harga'], 0, ',', '.'); ?></p>
+                        <div class="col">
+                            <div class="card shadow-sm border-light">
+                                <!-- Gambar Menu -->
+                                <img src="<?php echo $menu['foto']; ?>" class="card-img-top menu-img" alt="<?php echo $resto['nama']; ?>">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title"><?php echo $menu['nama']; ?></h5>
+                                    <p class="card-text"><?php echo 'Rp' . number_format($menu['harga'], 0, ',', '.'); ?></p>
+                                </div>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <p>Tidak ada menu di resto ini</p>
+                <p class="text-center">Tidak ada menu di resto ini</p>
             <?php endif; ?>
         </div>
+
+        <footer class="py-4 bg-dark text-white text-center" style="margin-top: auto;">
+            <p class="mb-0">© 2024 SantapLokal. All rights reserved.</p>
+        </footer>
     </main>
+
 </body>
 
 </html>
 
 <style>
-    .header {
-        background-color: #AAB396;
-        border-bottom: 1px solid #AAB396;
-        margin-bottom: 5px;
+    .resto-img {
         width: 100%;
-        height: 150px;
+        height: 300px;
+        object-fit: cover;
+        /* Gambar akan mengisi area tanpa distorsi */
+        object-position: center;
+        /* Menjaga gambar tetap di tengah */
+    }
+
+    /* Styling untuk gambar menu */
+    .menu-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        /* Gambar akan mengisi area tanpa distorsi */
+        object-position: center;
+        /* Menjaga gambar tetap di tengah */
+    }
+
+    body>footer {
+        margin-top: auto;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
         display: flex;
-        padding-bottom: 15px;
-        position: sticky;
+        flex-direction: column;
     }
 
-    .gambar{
-        display: flex;
-        margin: auto;
-        width: 15%;
-        height: auto;
-    }
-
-    .explore{
-        position: fixed;
-        left: 50px;
-        top: 100px;
-    }
-
-    main {
+    /* main {
         width: 100%;
         margin: 10px auto;
         background-color: #AAB396;
+    }
 
-        .wrapper {
-            width: 80%;
-            margin: 20px auto;
+    .wrapper {
+        width: 80%;
+        margin: 20px auto;
+    }
 
-            .resto{
-                display: flex;
-                width: 100%;
-                height: 500px;
-                background-color: #d9d9d9;
-                justify-content: space-evenly;
-                align-items: center;
+    .resto {
+        display: flex;
+        width: 100%;
+        height: auto;
+        background-color: #d9d9d9;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-radius: 10px;
+    }
 
-                .info{
-                    width: 600px;
-                    /* background-color: aqua; */
-                    word-wrap: break-word;
+    .resto .info {
+        width: 50%;
+        word-wrap: break-word;
+    }
 
-                    .judul{
-                        font-size: 32px;
-                        font-weight: 700;
-                        margin: 10px 0px;
-                    }
-                    .alamat{
-                        font-size: 32px;
-                        margin: 10px 0px;
-                    }
-                    .harga{
-                        font-size: 24px;
-                    }
-                }
+    .resto .info .judul {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 10px 0;
+    }
 
-                img{
-                    width: 400px;
-                    height: 400px;
-                    background-position: center;
-                    background-size: cover;
-                }
+    .resto .info .alamat {
+        font-size: 32px;
+        margin: 10px 0;
+    }
 
-            }
-            .garis{
-                height: 5px;
-                width: 100%;
-                background-color: #d9d9d9;
-                margin: 50px 0px;
-            }
+    .resto .info .harga {
+        font-size: 24px;
+    }
 
-            .wrapper-menu{
-                width: 100%;
-                display: grid;
-                margin: 0px auto;
-                grid-template-columns: repeat(7, 1fr);
-                gap: 20px;
+    .resto img {
+        width: 400px;
+        height: 400px;
+        background-position: center;
+        background-size: cover;
+        object-fit: cover;
+    }
 
-                .card{
-                    text-align: center;
-                    width: 250px;
-                    background-color: #d9d9d9;
-                    padding: 20px;
-                    border-radius: 10px;
-                    display: flex;
-                    align-items: center;
+    .garis {
+        height: 5px;
+        width: 100%;
+        background-color: #d9d9d9;
+        margin: 50px 0;
+    }
 
-                    img{
-                        align-items: center;
-                        width: 200px;
-                        height: 200px;
-                        object-fit: cover;
-                        background-position: center;
-                        background-size: cover;
-                    }
-                    .menu{
-                        font-size: 24px;
-                        font-weight: 600;
-                    }
-                    .harga{
-                        font-size: 20px;
-                        font-weight: 500;
-                    }
-                }
-            }
+    .wrapper-menu {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
 
+    .card {
+        text-align: center;
+        background-color: #d9d9d9;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        background-position: center;
+        background-size: cover;
+        border-radius: 10px;
+    }
+
+    .menu {
+        font-size: 24px;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    .harga {
+        font-size: 20px;
+        font-weight: 500;
+        margin-top: 10px;
+    }
+
+    /* Responsive Styles */
+    /* @media (max-width: 768px) {
+        .resto {
+            flex-direction: column;
+            align-items: center;
+            height: auto;
         }
 
+        .resto .info {
+            width: 100%;
+            text-align: center;
+        }
 
-    }
+        .resto img {
+            width: 300px;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        .wrapper-menu {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+    } */
 </style>
